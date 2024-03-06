@@ -1,21 +1,32 @@
+'''
+EL4236 Perancangan Perangkat Lunak Jaringan 2023/2024
+*Hari dan Tanggal : Rabu, 6 Maret 2024
+*Nama (NIM) 1     : Karma Kunga (13220028)
+*Nama (NIM) 2     : Bostang Palaguna (13220055)
+*Nama File        : server.c
+*Deskripsi        : sourcecode server untuk program komunikasi TCP socket
+*Programmer       : Bostang Palaguna
+'''
+
 import socket
 
 HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 8080        # Port to listen on (non-privileged ports are > 1023)
+PORT = 8081        # Port to listen on (non-privileged ports are > 1023)
 MAX_BUFFER_SIZE = 80
 
 def handle_connection(sockfd):
    """Handles communication with the server."""
    while True:
        try:
-           data = input("Enter the string: ").encode()
+           data = input("Client: ").encode()
            sockfd.sendall(data)
 
            response = sockfd.recv(MAX_BUFFER_SIZE).decode()
-           print("From Server:", response)
+           if response != "selesai":
+            print("Server:", response)
 
-           if response.startswith("exit"):
-               print("Client Exit...")
+           if response.startswith("selesai"):
+               print("Memutus koneksi...")
                break
 
        except (ConnectionError, KeyboardInterrupt):

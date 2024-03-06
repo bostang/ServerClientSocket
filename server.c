@@ -1,3 +1,13 @@
+/*
+EL4236 Perancangan Perangkat Lunak Jaringan 2023/2024
+*Hari dan Tanggal : Rabu, 6 Maret 2024
+*Nama (NIM) 1     : Karma Kunga (13220028)
+*Nama (NIM) 2     : Bostang Palaguna (13220055)
+*Nama File        : server.c
+*Deskripsi        : sourcecode server untuk program komunikasi TCP socket
+*Programmer       : Bostang Palaguna
+*/
+
 #include <stdio.h> 
 #include <netdb.h> 
 #include <netinet/in.h> 
@@ -7,40 +17,80 @@
 #include <sys/types.h> 
 #include <unistd.h> // read(), write(), close()
 #define MAX 80 
-#define PORT 8080 
+#define PORT 8081 
 #define SA struct sockaddr 
 
-// Function designed for chat between client and server. 
+// DEKLARASI KONSTANTA
+const char nama1[MAX]="Karma Kunga";
+const char nama2[MAX]="Bostang Palaguna";
+const char NIM1[MAX]="13220028";
+const char NIM2[MAX]="13220055";
+
+// REALISASI FUNGSI
+
+// Fungsi yang didesain untuk interaksi antara server dengan client
 void func(int connfd) 
 { 
-	char buff[MAX]; 
+	char buff[MAX];  // buffer untuk pesan
 	int n; 
-	// infinite loop for chat 
-	for (;;) { 
+
+	// infinite loop sampai server mengirim 'selesai'
+	for (;;)
+    {
+        // mengosongkan buffer
 		bzero(buff, MAX); 
 
-		// read the message from client and copy it in buffer 
+        // membaca pesan dari client dan menyimpan ke buffer
 		read(connfd, buff, sizeof(buff)); 
-		// print buffer which contains the client contents 
-		printf("From client: %s\t To client : ", buff); 
-		bzero(buff, MAX); 
-		n = 0; 
-		// copy server message in the buffer 
-		while ((buff[n++] = getchar()) != '\n') 
-			; 
 
-		// and send that buffer to client 
+        // mencetak buffer yang berisi pesan dari client
+        printf("client: %s\n", buff); 
+		// bzero(buff, MAX); // mengosongkan kembali buffer
+	
+        // jika buffer berisi 'nama1', maka server mengembalikan pesan 'Karma Kunga' ke client
+        if (strncmp("nama1", buff, 5) == 0)
+        {
+            strcpy(buff,nama1);
+        }
+
+        // jika buffer berisi 'nama2', maka server mengembalikan pesan 'Bostang Palaguna' ke client
+        else if (strncmp("nama2", buff, 5) == 0)
+        {
+            strcpy(buff,nama2);
+        }
+
+        // jika buffer berisi 'NIM1', maka server mengembalikan pesan 'Bostang Palaguna' ke client
+        else if (strncmp("NIM1", buff, 5) == 0)
+        {
+            strcpy(buff,NIM1);
+        }
+
+        // jika buffer berisi 'NIM2', maka server mengembalikan pesan 'Bostang Palaguna' ke client
+        else if (strncmp("NIM2", buff, 5) == 0)
+        {
+            strcpy(buff,NIM2);
+        }
+
+        // jika buffer berisi 'NIM2', maka server mengembalikan pesan 'Bostang Palaguna' ke client
+        else if (strncmp("selesai", buff, 5) == 0)
+        {
+            strcpy(buff,"selesai");
+            // break;
+        }
+
+        // selain isi buffer di atas, maka akan ditampilkan pesan error 
+        else
+        {
+            strcpy(buff,"Perintah tidak diketahui");
+        }
+
+		// mengirimkan buffer (isi pesan dari server) ke client
 		write(connfd, buff, sizeof(buff)); 
-
-		// if msg contains "Exit" then server exit and chat ended. 
-		if (strncmp("exit", buff, 4) == 0) { 
-			printf("Server Exit...\n"); 
-			break; 
-		} 
 	} 
-} 
+}
 
-// Driver function 
+// ALGORITMA UTAMA
+    // Driver function 
 int main() 
 { 
 	int sockfd, connfd, len; 
