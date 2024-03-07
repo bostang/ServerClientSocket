@@ -10,7 +10,8 @@ EL4236 Perancangan Perangkat Lunak Jaringan 2023/2024
 
 import socket
 
-HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+# HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+HOST = '10.8.100.167'  # IPv4 dari server
 PORT = 8081        # Port to listen on (non-privileged ports are > 1023)
 MAX_BUFFER_SIZE = 80
 
