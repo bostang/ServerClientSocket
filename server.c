@@ -86,6 +86,12 @@ void func(int connfd)
 
 		// mengirimkan buffer (isi pesan dari server) ke client
 		write(connfd, buff, sizeof(buff)); 
+
+        // break apabila pesan 'selesai' telah dikirim ke client
+        if (strncmp("selesai", buff, 5) == 0)
+        {
+            break;
+        }
 	} 
 }
 
